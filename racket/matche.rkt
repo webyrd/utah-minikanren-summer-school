@@ -85,10 +85,10 @@
                    #'((unquote u) ((c x)) ())]
                   [else (loop pat)])]
                [else (loop pat)])))
-         ;; (unless
-         ;;     (andmap (lambda (y) (= (length (syntax->list #'(v ...))) (length y)))                
-         ;;             (syntax->list #'([pat ...] ...)))
-         ;;   (error 'matche "pattern wrong length blah"))
+         (unless
+             (andmap (lambda (y) (= (length (syntax->datum #'(v ...))) (length y)))
+                      (syntax->datum #'([pat ...] ...)))
+           (error 'matche "pattern wrong length blah"))
          (with-syntax ([(([pat^ ...] (c ...) (x ...)) ...)
                         (map (lambda (y) (parse-pattern #'(v ...) y))
                              (syntax->list #'([pat ...] ...)))])
