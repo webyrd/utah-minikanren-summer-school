@@ -5,9 +5,8 @@ Code and resources for the miniKanren summer school at University of Utah
 
 For Racket goodness
 
-    > cd path/to/the/mk-summer-school-racket/
-    > cd ..
-    > raco link mk-summer-school-racket
+    > cd path/to/utah-minikanren-summer-school/mk-summer-school-racket
+    > raco link .
 
 and now, in Racket or the Dr, you should be able to just
 
