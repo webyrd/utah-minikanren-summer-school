@@ -22,7 +22,7 @@
   (let ((u (walk u0 s0)) (w (walk w0 s0)))
     (cond
       ((and (var? u) (var? w))
-       (if (var=? u w) s0 (ext-s-check u w s0)))
+       (if (var=? u w) s0 (ext-s u w s0)))
       ((and (var? u) (nonvar? w))
        (ext-s-check u w s0))
       ((and (nonvar? u) (var? w))
