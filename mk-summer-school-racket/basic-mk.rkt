@@ -9,8 +9,23 @@
 (require (only-in "var-primitives.rkt"
            var nonvar? var? var=?))
 
-(provide (all-defined-out))
+(provide (combine-out
+          (all-defined-out)
+          (all-from-out "state-primitives.rkt")
+          (all-from-out "subst-primitives.rkt")
+          (all-from-out "var-primitives.rkt")))
 
+
+
+(define occur?
+  (lambda (x term s)
+    (let ((t (walk term s)))
+      (cond
+        ((var? t) (var=? x t))
+        ((pair? t)
+         (or (occur? x (car t) s)
+             (occur? x (cdr t) s)))
+        (else #f)))))
 
 (define ext-s-check
   (lambda (u w s)
@@ -32,4 +47,15 @@
          (and s (unify (cdr u) (cdr w) s))))
       ((equal? u w) s0)
       (else #f))))
+
+(define mzero '())
+(define (unit s/c) (cons s/c mzero))
+
+(define (== u w)
+  (lambda (s0 c)
+    (let ((s (unify u w s0)))
+      (if s (unit (state s c)) mzero))))
+
+;;(define fail (== #t #f))
+;;(define succeed (== #t #t))
 
