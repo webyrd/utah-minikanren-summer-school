@@ -11,6 +11,7 @@
 (define empty-c '(() () () () () () ()))
 
 (define eigen-tag (vector 'eigen-tag))
+(define var-tag (vector 'var-tag))
 
 (define-syntax inc
   (syntax-rules ()
@@ -51,11 +52,11 @@
 
 (define var
   (lambda (dummy)
-    (vector dummy)))
+    (vector var-tag dummy)))
 
 (define var?
   (lambda (x)
-    (and (vector? x) (not (eq? (vector-ref x 0) eigen-tag)))))
+    (and (vector? x) (eq? (vector-ref x 0) var-tag))))
 
 (define walk
   (lambda (u S)
@@ -82,6 +83,10 @@
         ((and (pair? u) (pair? v))
          (let ((s (unify (car u) (car v) s)))
            (and s (unify (cdr u) (cdr v) s))))
+        ((and (vector? u) (vector? v))
+         (unify (vector->list u) (vector->list v) s))
+        ((and (struct? u) (struct? v))
+         (unify (struct->vector u) (struct->vector v) s))
         ((or (eigen? u) (eigen? v)) #f)
         ((equal? u v) s)
         (else #f)))))
